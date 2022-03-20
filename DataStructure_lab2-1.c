@@ -28,7 +28,6 @@ int main()
 	//int로 정의된 integerType 즉 int 타입의 크기는 4bytes이다.
 	//float으로 정의된 floatType 즉 float 타입의 크기는 4bytes이다.
 	//double로 정의된 doubleType 즉 double 타입의 크기는 8bytes이다.
-	//마지막 출력된 4줄은 전부 포인터 변수의 크기를 구하는 것이기에 모두 4bytes가 나온다.
-	
+	//마지막 출력된 4줄은 각각에 대한 포인터의 크기를 출력하는 것으로 모두 같은 값은 4bytes를 나타냅니다.
 
 }
