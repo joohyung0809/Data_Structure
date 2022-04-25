@@ -13,7 +13,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
- /* 필요한 헤더파일 추가 if necessary */
 
 
 typedef struct Node {
@@ -132,10 +131,6 @@ int initialize(headNode** h) {
 // 먼저 headNode가 NULL이 아니면 h를 freeList함수를 통해 메모리를 모두 해제합니다.
 // 그렇지 않다면 temp의 메모리를 동적으로 할당합니다. 이는 headNode에 대한 메모리를 할당했고 temp->first를 NULL값으로 초기화 한 후 리턴했습니다.
 
-// 워드에 이 함수를 자세히 살펴보면 매개변수를 double포인터로 받고 있습니다. single 포인터의 값을 바꾸기 위해 doeble포인터 매개변수를 받은 것입니다.
-// 그래서 
-/* note: initialize는 이중포인터를 매개변수로 받음
-		 lab3의 initialize와 차이점을 이해 할것 */
 
 int freeList(headNode* h) {
 	/* h와 연결된 listNode 메모리 해제
@@ -159,10 +154,7 @@ int freeList(headNode* h) {
 // 이때 p는 모든 노드에 접근하는 역할을 합니다. 그리고 prev는 p가 node를 돌면 그 값을 받아 free로 해제합니다.
 // 그래서 반복문을 통해 모든 노드를 접근하여 메모리를 해제한 후 마지막으로 headNode인 h를 해제합니다.
 
-// 워드에
-/* note: freeList는 싱글포인터를 매개변수로 받음
--initialize와 왜 다른지 이해 할것
-- 이중포인터를 매개변수로 받아도 해제할 수 있을 것 */
+
 
 
 
@@ -196,9 +188,6 @@ void printList(headNode* h) {
 // 그렇지 않다면 p에 h->first값을 넣고, p가 다음노드로 이동하며 반복문을 이용하여 list의 모든 노드에 접근합니다.
 // 반복문 안에서 노드의 키에 접근하여 출력합니다. 동시에 p는 다음 노드로 이동하고, i는 값을 계속 늘려줍니다.
 // 마지막으로 i값을 이용하여 list의 노드 개수를 출력합니다.
-
-// 워드에 이 함수는 singly linked list와 다르지 않습니다. 왜냐하면 이 리스트 노드들의 link가 두 개로 늘어난 것이지 노드 값의 개수는 변함이 없기 때문입니다.
-// 따라서 노드의 값과 개수를 출력하는 doubly linked list에서 printList함수는 singly linked list와 다르지 않습니다.
 
 
 
@@ -236,8 +225,6 @@ int insertLast(headNode* h, int key) {
 // 그리고 반복문이 끝난다면 n이 가장 마자막 노드인 상태이므로 n의 rlink를 node로 할당하면 node가 가장 마지막에 삽입될 수 있습니다.
 // 마지막으로 node의 llink가 정해지지 않았기에 n으로 정해주면 node가 마지막 노드에 놓여 이어집니다.
 
-// 워드에 처음에 insertFirst와 달리 두 link에 NULL을 넣은 이유는 마지막 노드로 들어가기에 rlink는 NULL이고,
-// llink는 아직 마지막에서 두 번째 노드에 접근하지 않았기에 당장 할당할 수 없기 때문입니다.
 
 
 /**
@@ -322,8 +309,6 @@ int insertFirst(headNode* h, int key) {
 // 하지만 node의 h->first의 상태가 변하지 않았기에 두 번째에 있고, 두 번째 노드의 llink가 아무것도 가리키지 않게 됩니다.
 // 이를 해결하기 위해 listNode 형태의 포인터 변수 p를 h->first로 만들어 p의 llink를 node로 만들고, h->first를 node로 만들면 됩니다.
 
-// 워드에 여기서 link가 두 개인 이유는 doubly linked list이기 때문에 위에서 선언한 구조체와 같이 왼쪽과 오른쪽으로 모두 접근할 수 있는 노드를 만들었기 때문입니다.
-
 /**
  * list의 첫번째 노드 삭제
  */
@@ -386,8 +371,6 @@ int invertList(headNode* h) {
 // 그리고 다시 다음 노드로 이동한 후 n이 NULL이 될 때까지 반복하면 모든 노드의 link방향이 뒤집어집니다. 
 // 마지막으로 반복문이 끝나면 h->first의 값을 middle로 해주어 마무리합니다.
 
-//워드에 반복문 첫 3줄은 다음으로 이동, 마지막에 해주는 이유 저번이랑 같게 쓰면 됨
-
 
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
 int insertNode(headNode* h, int key) {
@@ -438,8 +421,7 @@ int insertNode(headNode* h, int key) {
 // 다시 얘기하면 계속해서 증가하던 n이 중간이나 마지막에 들어가야 한다면 입력 노드 node의 오른쪽으로는 n, 왼쪽으로는 n의 llink를 넣습니다.
 // 이렇게 하면 node와 왼쪽값이 이어져있는 것 빼고 다 이어져있습니다. 그래서 마지막으로 n->llink->rlink = node;를 통해 이어줍니다.
 // 
-// 워드에 trail 선언 안 한 이유는 노드들이 오른쪽과 왼쪽 모두 link를 가지고 있기에 그전의 값들에 모두 접근할 수 있기 때문입니다.
-// 반복문마다 실행되는 n = n->rlink; 코드는 n이 계속해서 다음 노드로 넘어간다는 의미입니다.
+
 
 	/* 마지막 노드까지 찾지 못한 경우, 마지막에 삽입 */
 	insertLast(h, key);
@@ -498,6 +480,3 @@ int deleteNode(headNode* h, int key) {
 // 이를 실행하면 n의 rlink를 전 값의 rlink로, n의 llink를 다음값의 llink로 넣습니다. 
 // 그리고 free(n)을 통해 n의 메모리 해제를 하여 노드를 사라지게 만듭니다.
 // 값을 찾지 못했다면 key의 값을 찾을 수 없다는 메시지를 출력합니다.
-
-// 워드에 trail 선언 안 한 이유는 노드들이 오른쪽과 왼쪽 모두 link를 가지고 있기에 그전의 값들에 모두 접근할 수 있기 때문입니다.
-// 반복문마다 실행되는 n = n->rlink; 코드는 n이 계속해서 다음 노드로 넘어간다는 의미입니다.
