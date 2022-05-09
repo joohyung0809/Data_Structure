@@ -28,8 +28,7 @@ int deleteLeafNode(Node* head, int key);  /* delete the leaf node for the key */
 Node* searchRecursive(Node* ptr, int key);  /* search the node for the key */
 Node* searchIterative(Node* head, int key);  /* search the node for the key */
 int freeBST(Node* head); /* free all memories allocated to the tree */
-
-/* you may add your own defined functions if necessary */
+void freeNode(Node* ptr);
 
 
 int main()
@@ -190,16 +189,85 @@ int deleteLeafNode(Node* head, int key)
 
 Node* searchRecursive(Node* ptr, int key)
 {
+	if (ptr == NULL)
+		return NULL;
 
+	if (ptr->key < key)
+		ptr = searchRecursive(ptr->right, key);
+	else if (ptr->key > key)
+		ptr = searchRecursive(ptr->left, key);
+
+	return ptr;
 }
+
+// 이 함수는 입력한 key값을 가진 노드의 주소를 재귀방식으로 찾아내는 함수입니다.
+// 이는 트리를 순회하면서 노드를 찾는데 ptr의 key가 입력받은 key보다 작으면 함수인자를 오른쪽 링크로 받아 재귀함수를 호출합니다.
+// 그렇지 않고 ptr의 key가 입력받은 key보다 크면 함수인자를 왼쪽 링크로 받아 재귀함수를 호출합니다.
+// 그렇게 계속 탐색해가다가 ptr의 key값이 입력받은 key값과 같아지는 경우 ptr을 return합니다.
+// ptr이 NULL이라면 NULL을 return합니다. 이 뜻은 트리를 탐색했음에도 일치하는 key값이 없는 경유 NULL을 return한다는 것입니다.
 
 Node* searchIterative(Node* head, int key)
 {
+	Node* ptr = head->left;
+
+	while (ptr != NULL)
+	{
+		if (ptr->key == key)
+			return ptr;
+
+		if (ptr->key < key) {
+			ptr = ptr->right;
+		}
+		else {
+			ptr = ptr->left;
+		}
+	}
+
+	return NULL;
 
 }
+
+// 이 함수는 입력한 key값을 가진 노드의 주소를 순차방식으로 찾아내는 함수입니다.
+// 함수 처음에 ptr이라는 변수를 선언하여 헤드노드로 둡니다.
+// 그리고 ptr이 NULL이 될 때까지 ptr의 위치를 이동시킵니다. 
+// 이때 이동시키는 기준은 현재 ptr 위치의 key값과 입력받은 값과 비교하여 정합니다.
+// ptr의 key값이 입력받은 값보다 작으면 오른쪽, 그렇지 않다면 왼쪽으로 이동합니다. 
+// 이렇게 반복문을 실행하다가 ptr의 key값이 입력받은 값과 일치하면 ptr을 retun합니다.
+
+
+void freeNode(Node* ptr)
+{
+	if (ptr) {
+		freeNode(ptr->left);
+		freeNode(ptr->right);
+		free(ptr);
+	}
+}
+
+// 이 함수는 노드에게 할당되었던 메모리를 하제하는 함수입니다.
+// Node*형태의 ptr에 값이 있다면 다시 freeNode함수를 호출하는 재귀함수 형태입니다.
+// 트리 모두에 접근하기 위해 재귀함수를 사용했으며 접근하는 ptr에 free()함수를 통해 메모리 할당을 해제했습니다.
 
 
 int freeBST(Node* head)
 {
 
+	if (head->left == NULL)
+	{
+		free(head);
+		return 1;
+	}
+
+	Node* p = head->left;
+
+	freeNode(p);
+
+	free(head);
+	return 1;
 }
+
+// 이 함수는 만들었던 Binary Search Tree를 해제하는 함수입니다.
+// 이 함수에서는 처음에 head->left가 NULL이라면 즉, head만 있다면 free()함수를 이용하여 head만 해제하고 함수를 종료합니다.
+// 그 외의 경우에는 Node* 형태의 p를 head의 left로 둡니다. 즉, 루트 노드로 둔 것입니다.
+// 그리고 전에 만들었던 freeNode()함수를 이용하여 전체 트리를 순회하며 메모리를 해제합니다.
+// 마지막으로 head노드의 메모리를 해제하고 함수를 종료합니다.
