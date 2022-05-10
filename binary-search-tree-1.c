@@ -179,13 +179,133 @@ void postorderTraversal(Node* ptr)
 
 int insert(Node* head, int key)
 {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->key = key;
+	newNode->left = newNode->right = NULL;
+	//head노드만 있는 경우
+	if (head->left == NULL) {
+		head->left = newNode;
+		return 1;
+	}
+	Node* n = head->left;
+	Node* parentNode = NULL;
+	while (n != NULL) {
 
+		// 같은 값은 안 넣어준다 이 말이지
+		if (n->key == key) {
+			return 1;
+		}
+
+		// 반복문을 돌며 부모노드가 자식 노드 계속 따라옴
+		parentNode = n;
+
+		//key 값을 비교하여 돌고 있는 n의 키값이 입력받은 키 값보다 작으면 오른쪽 그 이외는 왼쪽으로 간다.(NULL값 까지) 
+		if (n->key < key)
+			n = n->right;
+		else
+			n = n->left;
+	}
+
+	// 반복문이 끝나고 부모노드와 비교하여 오른쪽으로 넣을지 왼쪽으로 넣을지 결정
+	if (parentNode->key > key)
+		parentNode->left = newNode;
+	else
+		parentNode->right = newNode;
+	return 1;
 }
+
+// 이 함수는 이진탐색트리의 특성에 맞게 입력한 key값을 알맞은 위치에 놓도록 하는 함수입니다.
+// 먼저 newNode변수를 동적할당하여 새로운 노드가 들어갈 공간을 할당합니다.
+// 그리고 그 노드의 key에는 입력받은 값을 넣고, 양쪽의 링크는 NULL로 세팅합니다.
+// 다음으로 head->left == NULL인 경우 즉, 헤드노드만 있는 경우 루트노드에 새로운 노드가 들어가게 하면 됩니다.
+// 그래서 head->left에 newNode를 넣고 함수를 종료시켰습니다.
+// 헤드노드만 있는 경우가 아니라면 Node* 형태의 n과 parentNode를 선언하여 각각 head->left와 NULL을 가리키게 했습니다.
+// 이때 parentNode는 다음 노드로 이동하는 n의 부모노드를 가리키기 위해 선언했습니다.
+
+// 이제 입력한 값을 찾기 위해 트리를 탐색하기 위해 반복문을 실행하여 parentNode = n을 써줍니다.
+// 그리고 다음 값으로 이동하는 n의 key값이 입력받은 키값과 비교하여 작으면 오른쪽, 크면 왼쪽 노드로 이동할 수 있도록 했습니다.
+// 이진트리에서 부모노드보다 작으면 왼쪽으로 크면 오른쪽으로 삽입하기 위해서입니다.
+// 혹시나 같은 값이 입력되는 것을 방지하기 위해 그러한 경우 함수를 끝내도록 했습니다.
+// 마지막으로 반복문이 끝나고 부모노드와 비교하여 오른쪽으로 넣을지 왼쪽으로 넣을지 결정하는 코드를 작성했습니다.
+// 앞서 언급했듯이 부모노드의 key값과  비교하여 노드 위치를 결정하기 때문입니다.
+
+
+// 워드에 이진트리의 특성을 설명하겠습니다. 한 노드는 최대 두 개의 자식노드를 가집니다.
+// 왼쪽 서브트리와 오른쪽 서브트리를 구별할 수 있으며, 0개의 노드를 가질 수 있습니다.
+// 그래서 이진트리를 공백이거나 루트와 왼쪽 서브트리, 오른쪽 서브트리 두 개의 분리된 이진 트리로 구성 된 노드의 유한 집합으로 정의할 수 있습니다.
+// 이 소스코드에서 구현한 것은 이진트리에 부모노드보다 큰 자식노드는 오른쪽, 작으면 왼쪽으로 넣는 조건을 추가한 이진탐색트리를 구현한 것입니다.
 
 int deleteLeafNode(Node* head, int key)
 {
+	if (head == NULL) {
+		printf("\n Nothing to delete!!\n");
+		return -1;
+	}
+
+	if (head->left == NULL) {
+		printf("\n Nothing to delete!!\n");
+		return -1;
+	}
+
+	Node* ptr = head->left;
+	Node* parentNode = head;
+
+	while (ptr != NULL) {
+
+		if (ptr->key == key) {
+			if (ptr->left == NULL && ptr->right == NULL) {
+
+				// 조건에 걸린 노드가 루트 노드인 경우
+				if (parentNode == head)
+					head->left = NULL;
+
+				if (parentNode->left == ptr) // 조건에 걸린 노드가 왼쪽인 경우
+					parentNode->left = NULL;
+				else // 조건에 걸린 노드가 오른쪽인 경우
+					parentNode->right = NULL;
+
+				free(ptr);
+			}
+			else {
+				printf("the node [%d] is not a leaf \n", ptr->key);
+			}
+			return 1;
+		}
+
+		parentNode = ptr;
+
+		// 트리를 순회하는 ptr의 key값과 입력받은 값을 비교하여 ptr을 이동시킴
+		if (ptr->key < key)
+			ptr = ptr->right;
+		else
+			ptr = ptr->left;
+
+
+	}
+
+	printf("Cannot find the node for key [%d]\n ", key);
+
+	return 1;
 
 }
+
+// 이 함수는 입력받은 값이 트리 내에 리프노드에 있다면 삭제하는 함수입니다.
+// 먼저 head == NULL인 경우와 head->left == NULL인 경우에는 삭제할 값이 없기에 관련 메시지를 출력하고 함수를 종료합니다.
+// 삭제할 값이 있는 트리라면 순회를 위해 Node* 형태의 n과 parentNode를 선언하여 각각 head->left와 NULL을 가리키게 했습니다.
+// 이때 parentNode는 다음 노드로 이동하는 n의 부모노드를 가리키기 위해 선언했습니다.
+
+// 다음으로 트리를 순회하기 위해 반복문을 수행합니다. 이 안에서 parentNode = ptr을 넣어 다음으로 움직이는 ptr을 parentNode가 따라가게 합니다.
+// 참고로 ptr의 key값이 입력받은 키값과 비교하여 작으면 오른쪽, 크면 왼쪽 노드로 이동할 수 있도록 했습니다.
+// 반복문 실행이 끝나도 같은 key값을 찾지 못 하면 찾을 수 없다는 메시지를 출력합니다.
+
+// 반복문을 수행하다 ptr의 key값이 입력받은 key값과 같은 경우 다음 조건문을 수행합니다. 
+// 위 조건에서 ptr->left == NULL 그리고 ptr->right == NULL인 경우가 리프노드인 경우입니다.
+// 이 경우가 존재하지 않는다면 그 key를 가진 노드는 리프노드가 아니라는 메시지를 출력합니다.
+// 이때 parentNode == head인 경우는 루트노드 하나만 있다는 뜻입니다. 이러한 경우 head->left를 NULL로 만들어줍니다.
+// parentNode->left이 ptr이라면 parentNode의 왼쪽 자식노드가 리프노드이므로 parentNode->left를 NULL로 만들어줍니다.
+// 그 외의 경우는 parentNode의 오른쪽 자식노드가 리프노드이므로 parentNode->right를 NULL로 만들어줍니다.
+// 이 작업이 끝나면 할당되었던 메모리를 해제하기 위해 ptr을 free()함수를 통해 메모리 해제합니다.
+
 
 Node* searchRecursive(Node* ptr, int key)
 {
