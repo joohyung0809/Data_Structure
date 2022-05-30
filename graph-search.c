@@ -275,7 +275,6 @@ void printGraph(graphVertex* head)
 // for문을 통해 vertex가 생성된 헤드 배열을 출력합니다.
 // 그 안에서 반복문을 통해 각각의 헤드배열에 연결된 리스트의 key값을 출력합니다.
 
-// 워드에 이때 출력은 오름차순으로 출력됩니다. 왜냐하면 InsertEdge함수에서 이미 정렬이 되었기 때문입니다.
 
 
 int depthFirst(graphVertex* head, int key)
@@ -356,7 +355,6 @@ int breathFirst(graphVertex* head, int key)
 // 단 방문하지 않은 노드에만 이 코드가 실행되게 합니다. 이때 follow의 값은 deQueue를 통해 받은 값에 해당하는 헤드 배열의 key값입니다.
 // 이 follow의 값을 스택이 모두 사라질 때까지 계속 바꾸어줍니다.
 
-// 워드에 DFS, BFS모두 시작하기 전에 visited배열을 0(FALSE)로 초기화 합니다. 왜냐하면 DFS와 BFS가 같은 visited배열을 공유하기 때문입니다.
 
 int deQueue()
 {
