@@ -38,6 +38,7 @@ int search(int *ht, int key);
 
 int main()
 {
+	printf("[----- [오주형] [2019023028] -----]\n");
 	char command;
 	int *array = NULL;
 	int *hashtable = NULL;
@@ -358,7 +359,10 @@ int quickSort(int *a, int n)
 // 함수인자에서 n은 MAX_ARRAY_SIZE를 나타냅니다. n이 1보다 크면 v = a[n-1], i = -1, j = n - 1을 해줍니다.
 // 여기서 v는 피봇을 가리킵니다. 피봇은 왼쪽과 오른쪽을 나누는 기준입니다.
 // 그리고 무한반복문 안에서 피봇보다 작은 key를 찾기 위해 왼쪽에서 오른쪽으로 검사하고, 큰 key를 찾기 위해 오른쪽에서 왼쪽으로 검사합니다.
-// 그리고 
+// 그리고 i가 j보다 크거나 같아지면 반복문을 탈출하고 그렇지 않으면 오른쪽과 왼쪽값은 바꿉니다.
+// 그리고 i가 j보다 크거나 같아지고 반복문을 나오면 피봇을 재조정합니다.
+// 마지막으로 i를 중심으로 다시 왼쪽과 오른쪽을 구분하여 quckSort를 진행합니다.
+// 그렇게 하면 배열의 퀵 정렬이 완성됩니다.
 
 int hashCode(int key) {
    return key % MAX_HASH_TABLE_SIZE;
