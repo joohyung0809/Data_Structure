@@ -368,7 +368,13 @@ int hashCode(int key) {
    return key % MAX_HASH_TABLE_SIZE;
 }
 
-int hashing(int *a, int **ht)
+// 이 함수는 hashing함수에서 쓰이는 함수입니다.
+// 홈 버킷이 %연산자에 의해 결정되는 제산 함수입니다.
+// 입력받은 key 값을 MAX_HASH_TABLE_SIZE와 %연산자를 실행한 값을 리턴합니다.
+// 이때 MAX_HASH_TABLE_SIZE는 MAX_ARRAY_SIZE값과 같습니다.
+
+
+int hashing(int *a, int **ht) // *a는 array임
 {
 	int *hashtable = NULL;
 
@@ -419,6 +425,17 @@ int hashing(int *a, int **ht)
 	return 0;
 }
 
+// 이 함수는 메뉴에서 h를 눌렀을 떄 실행되는 함수입니다. 배열의 해싱을 진행합니다.
+// 함수인자의 해시 테이블이 NULL인 경우 hashtable 변수에 배열의 크기만큼 동적할당을 받습니다.
+// NULL이 아닌 경우 그 테이블을 재활용합니다. 다음으로 해시 테이블의 값을 모두 -1로 초기화합니다.
+// 이제 배열에 접근하는데 0부터 MAX_ARRAY_SIZE만큼 반복하면서 array의 모든 값에 접근하면서 key값에 넣습니다. 
+// 이때 hashCode함수로 hashcode변수에 key값의 해시코드를 넣습니다.
+// 그 반복문 안에서 hashtable[hashcode] == -1 이면 즉 초기화 했던 값으로 있다면 그 자리에 key값을 넣습니다.
+// 그렇지 않으면 오버플로가 발생한 것이므로 처리해야 합니다.
+// 처리하기 위해 다음 인덱스를 확인하기 위해 index변수에 들어가지 못한 hashcode를 넣고 hashtable[index]값이 -1이 될 때 까지 반복문을 실행합니다.
+// 그래서 index 값을 (++index) % MAX_HASH_TABLE_SIZE로 -1이 될 때 까지 계속 갱신합니다
+// -1이 되면 초기에 세팅한 곳으로 온 것이기에 그 자리에 key값을 삽입하면 됩니다.
+
 int search(int *ht, int key)
 {
 	int index = hashCode(key);
@@ -432,3 +449,8 @@ int search(int *ht, int key)
 	}
 	return index;
 }
+
+// 이 함수는 메뉴에서 e를 눌렀을 때 실행되는 함수입니다. 입력받은 key값의 위치를 확인합니다.
+// index 변수에 hashCode(key)값을 넣습니다. ht의 index 값이 key값과 같다면 index를 리턴합니다.
+// 그렇지 않다면 index가 key값과 같아질 때 까지 다음 값으로 늘리면서 index 값을 index % MAX_HASH_TABLE_SIZE 값으로 갱신합니다.
+// 그리고 key값과 같아지면 반복문을 빠져나와 그때의 index값을 리턴합니다.
